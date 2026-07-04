@@ -6,7 +6,6 @@ import {
 } from 'lucide-react';
 import { getGeminiResponse, setGeminiApiKey, getGeminiApiKey, isGeminiConfigured } from '../../services/geminiService';
 import { useTheme } from '../../context/ThemeContext';
-import './AIChatbot.css';
 
 /* Quick reply suggestions */
 var QUICK_REPLIES = ['How do I create an event?', 'Show my stats', 'Find volunteers', 'What is Sarvhit?'];

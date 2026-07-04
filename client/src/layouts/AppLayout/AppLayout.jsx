@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, Menu, X, Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import './AppLayout.css';
 
 export default function AppLayout() {
     const { user, logout } = useAuth();
