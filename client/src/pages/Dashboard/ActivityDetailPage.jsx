@@ -6,7 +6,6 @@ import {
     ArrowLeft, CalendarDays, MapPin, Tag, TrendingUp,
     Clock, Share2, Heart
 } from 'lucide-react';
-import './ActivityDetailPage.css';
 
 /* Flatten all activities from every role into a single lookup */
 const ALL_ACTIVITIES = Object.values(ROLE_DATA).flatMap(r => r.activity);

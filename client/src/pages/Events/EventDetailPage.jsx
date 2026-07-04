@@ -9,7 +9,6 @@ import {
     Tag, ArrowUpRight, Check, Heart, Share2, X,
     TrendingUp, CheckCircle, Lightbulb, HandHeart, ClipboardList
 } from 'lucide-react';
-import './EventDetailPage.css';
 
 export default function EventDetailPage() {
     const { id } = useParams();

@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { fadeUp } from '../../hooks/useAnimations';
 import { ArrowLeft, Star, Award, Shield, Zap, Heart, Clock, Trophy, Target, Flame } from 'lucide-react';
-import './BadgesPage.css';
 
 const BADGES = [
     { id: 1, name: 'First Steps', desc: 'Joined your first event', icon: '🌱', earned: true, date: 'Jan 15, 2025' },

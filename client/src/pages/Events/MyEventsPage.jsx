@@ -8,7 +8,6 @@ import {
     Star, ChevronRight, CheckCircle2, Clock, Search,
     Award, Briefcase
 } from 'lucide-react';
-import './MyEventsPage.css';
 
 /* ── Role-specific dummy data ── */
 const NGO_EVENTS = [

@@ -5,7 +5,6 @@ import {
     ArrowLeft, TrendingUp, Users, CalendarDays, IndianRupee,
     Download, LineChart, PieChart, ArrowUpRight
 } from 'lucide-react';
-import './ReportsPage.css';
 
 const MONTHLY_DATA = [
     { month: 'Oct', events: 3, volunteers: 45, funds: 32000 },

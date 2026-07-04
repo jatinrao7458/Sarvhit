@@ -10,7 +10,6 @@ import {
     IndianRupee, ArrowUpRight, Tag, X, Check, ChevronDown,
     Sparkles, Leaf, BookOpen, HeartPulse, Globe
 } from 'lucide-react';
-import './EventsPage.css';
 
 const STATUS_OPTIONS = [
     { key: 'upcoming', label: 'Upcoming' },

@@ -9,7 +9,6 @@ import {
     CalendarDays, Calendar, ArrowUpRight, Check, Send, IndianRupee,
     Briefcase, Tag, Building2, Award, Folder
 } from 'lucide-react';
-import './DiscoverDetailPage.css';
 
 export default function DiscoverDetailPage() {
     const { type, id } = useParams();

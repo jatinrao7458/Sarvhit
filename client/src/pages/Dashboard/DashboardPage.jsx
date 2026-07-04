@@ -10,7 +10,6 @@ import {
     X
 } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
-import './DashboardPage.css';
 
 function PostAvatar({ initials, role }) {
     return (

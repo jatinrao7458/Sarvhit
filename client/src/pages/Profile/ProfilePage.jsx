@@ -9,7 +9,6 @@ import {
     BarChart3, TrendingUp, Flame, Target
 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import './ProfilePage.css';
 
 const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
 const AVATAR_TARGET_SIZE = 512;

@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Shield, Heart, Sparkles, Eye, EyeOff, Check, Plus, X } from 'lucide-react';
-import './AuthPage.css';
 
 const COMMON_SKILLS = [
     'First Aid', 'Teaching', 'Event Management', 'Fundraising',

@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Clock, CalendarDays, IndianRupee, TrendingUp, Flame, Users, Building2, Heart } from 'lucide-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LeaderboardPage.css';
 
 const MEDAL = ['🥇', '🥈', '🥉'];
 const PODIUM_ORDER = [1, 0, 2]; // visual: 2nd, 1st, 3rd

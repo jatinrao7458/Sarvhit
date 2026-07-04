@@ -3,7 +3,6 @@ import { fadeUp } from '../../hooks/useAnimations';
 import { motion } from 'framer-motion';
 import { MessageCircle, Send, Search } from 'lucide-react';
 import { useState } from 'react';
-import './MessagesPage.css';
 
 const CONVERSATIONS = {
     ngo: [

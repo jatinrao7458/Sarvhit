@@ -6,7 +6,6 @@ import {
     ArrowLeft, Search, IndianRupee, Users, MapPin, ArrowUpRight,
     Filter, Tag, TrendingUp, Check
 } from 'lucide-react';
-import './BrowseProjectsPage.css';
 
 const PROJECTS = [
     { id: 1, title: 'Clean River Drive', org: 'Green Earth Foundation', cause: 'Environment', location: 'Delhi', goal: 80000, raised: 62000, volunteers: 32, icon: '🏞️', impact: 'Clean 12km of riverbank' },

@@ -7,7 +7,6 @@ import {
     MapPin, CalendarDays, Clock, Users, IndianRupee,
     Star, TrendingUp, Briefcase, ArrowLeft, Folder
 } from 'lucide-react';
-import './UserProfilePage.css';
 
 const ROLE_LABEL = { ngo: '🏛️ NGO', volunteer: '🤝 Volunteer', sponsor: '💎 Sponsor' };
 

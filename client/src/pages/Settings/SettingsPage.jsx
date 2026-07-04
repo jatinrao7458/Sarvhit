@@ -6,7 +6,6 @@ import {
     Moon, Sun, Globe, Lock, Mail
 } from 'lucide-react';
 import { useState } from 'react';
-import './SettingsPage.css';
 
 export default function SettingsPage() {
     const { user, logout } = useAuth();

@@ -7,7 +7,6 @@ import {
     MoreHorizontal, UserPlus, UserMinus, Star, Check, X,
     CalendarClock
 } from 'lucide-react';
-import './ManageTeamPage.css';
 
 const TEAM_MEMBERS = [
     { id: 1, name: 'Aarav Patel', role: 'Admin', email: 'aarav@greenearth.org', avatar: '🧑‍💼', hours: 240, joined: 'Jan 2024', status: 'active' },

@@ -6,7 +6,6 @@ import {
     Star, Clock, CheckCircle2, AlertTriangle, Heart,
     TrendingUp, MessageSquare, ThumbsUp
 } from 'lucide-react';
-import './EventReportPage.css';
 
 /* ── Dummy report data keyed by event id ── */
 const REPORTS = {

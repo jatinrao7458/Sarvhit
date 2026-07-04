@@ -7,7 +7,6 @@ import CountUp from '../../components/ui/CountUp';
 import ImpactMarquee from '../../components/ui/ImpactMarquee';
 import EventCarousel from '../../components/ui/EventCarousel';
 import AboutFlipCards from '../../components/ui/AboutFlipCards';
-import './LandingPage.css';
 import { useTheme } from '../../context/ThemeContext';
 
 const STATS = [

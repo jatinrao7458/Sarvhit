@@ -6,7 +6,6 @@ import {
     ArrowLeft, CalendarDays, MapPin, Clock, Users, IndianRupee,
     Tag, Image, FileText, ChevronDown, Plus, X, Check
 } from 'lucide-react';
-import './CreateEventPage.css';
 
 const CAUSES = ['Environment', 'Education', 'Healthcare', 'Community', 'Animal Welfare', 'Disaster Relief'];
 

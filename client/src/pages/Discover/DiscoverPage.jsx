@@ -10,7 +10,6 @@ import {
 } from 'lucide-react';
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import './DiscoverPage.css';
 
 /* ═══════════════════════════════════════
    EXPLORE TILE — clean, no caption

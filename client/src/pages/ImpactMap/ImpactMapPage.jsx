@@ -7,7 +7,6 @@ import { MapPin, Layers, AlertTriangle, X, Send, Target, Search, Navigation, Cro
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMapEvents, useMap } from 'react-leaflet';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import 'leaflet/dist/leaflet.css';
-import './ImpactMapPage.css';
 
 import L from 'leaflet';
 delete L.Icon.Default.prototype._getIconUrl;

@@ -5,7 +5,6 @@ import {
     ArrowLeft, IndianRupee, Download, FileText, CalendarDays,
     Check, Building2, Receipt
 } from 'lucide-react';
-import './TaxReceiptsPage.css';
 
 const RECEIPTS = [
     { id: 'TR-2026-001', date: 'Feb 15, 2026', amount: 50000, org: 'Green Earth Foundation', project: 'Tree Plantation Week', status: 'generated', section: '80G' },

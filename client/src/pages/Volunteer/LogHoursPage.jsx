@@ -5,7 +5,6 @@ import { fadeUp } from '../../hooks/useAnimations';
 import {
     ArrowLeft, Clock, CalendarDays, FileText, Check, Plus, ChevronDown
 } from 'lucide-react';
-import './LogHoursPage.css';
 
 const RECENT_LOGS = [
     { id: 1, event: 'Clean River Drive', date: 'Feb 24, 2026', hours: 4, status: 'approved', org: 'Green Earth Foundation' },

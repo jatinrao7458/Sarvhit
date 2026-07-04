@@ -6,7 +6,6 @@ import {
     ArrowLeft, Users, Mail, Search, Star, Clock,
     CalendarClock, Check, X, Building2
 } from 'lucide-react';
-import './MyNgoPage.css';
 
 const NGO_INFO = {
     name: 'Green Earth Foundation',

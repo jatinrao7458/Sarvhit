@@ -5,7 +5,6 @@ import {
     ArrowLeft, CalendarDays, Users, IndianRupee, MapPin,
     Star, ChevronRight, Clock, CheckCircle2
 } from 'lucide-react';
-import './HostedEventsPage.css';
 
 const HOSTED_EVENTS = [
     {

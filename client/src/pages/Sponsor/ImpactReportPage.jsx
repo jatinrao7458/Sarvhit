@@ -5,7 +5,6 @@ import {
     ArrowLeft, TrendingUp, IndianRupee, Users, Folder,
     LineChart, PieChart, Download, ArrowUpRight, MapPin
 } from 'lucide-react';
-import './ImpactReportPage.css';
 
 const FUNDED_PROJECTS = [
     { name: 'Clean River Drive', org: 'Green Earth Foundation', donated: 50000, beneficiaries: 200, status: 'active', icon: '🏞️' },
