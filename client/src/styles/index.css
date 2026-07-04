@@ -1,0 +1,411 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ═══════════════════════════════════════════
+   Sarvhit — Tailwind v4 Theme Configuration
+   ═══════════════════════════════════════════ */
+
+@theme {
+  /* ── Typography ── */
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-display: 'DM Serif Display', Georgia, 'Times New Roman', serif;
+
+  /* ── Custom Colors ── */
+  --color-bg-primary: #0a0a0f;
+  --color-bg-secondary: #111116;
+  --color-bg-tertiary: #1a1a22;
+  --color-bg-elevated: #222230;
+
+  --color-text-primary: #f0ede8;
+  --color-text-secondary: #a8a29e;
+  --color-text-muted: #6b6560;
+  --color-text-inverse: #0a0a0f;
+
+  --color-accent-ngo: hsl(160, 84%, 39%);
+  --color-accent-volunteer: hsl(38, 92%, 50%);
+  --color-accent-sponsor: hsl(263, 70%, 58%);
+
+  --color-accent: var(--accent, hsl(38, 92%, 50%));
+  --color-accent-soft: var(--accent-soft, hsla(38, 92%, 50%, 0.15));
+  --color-accent-glow: var(--accent-glow, hsla(38, 92%, 50%, 0.5));
+
+  --color-success: hsl(145, 60%, 45%);
+  --color-danger: hsl(0, 70%, 60%);
+
+  /* ── Border Radius ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 40px var(--accent-glow, hsla(38, 92%, 50%, 0.5));
+
+  /* ── Custom Easing ── */
+  --ease-out-custom: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Animations ── */
+  --animate-marquee-scroll: marquee-scroll 35s linear infinite;
+  --animate-orb-breathe: orb-breathe 5s ease-in-out infinite;
+  --animate-ring-spin: ring-spin 20s linear infinite;
+  --animate-card-shimmer: card-shimmer 4s ease-in-out infinite;
+
+  @keyframes marquee-scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  @keyframes orb-breathe {
+    0%, 100% { transform: scale(1); opacity: 0.3; }
+    50% { transform: scale(1.15); opacity: 0.45; }
+  }
+
+  @keyframes ring-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes card-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+}
+
+/* ═══════════════════════════════════════════
+   CSS Custom Properties (Dynamic at runtime)
+   ═══════════════════════════════════════════ */
+:root {
+  /* Dynamic accent — set by JS based on user role */
+  --accent: hsl(38, 92%, 50%);
+  --accent-soft: hsla(38, 92%, 50%, 0.15);
+  --accent-glow: hsla(38, 92%, 50%, 0.5);
+
+  /* Role-specific accents */
+  --accent-ngo: hsl(160, 84%, 39%);
+  --accent-ngo-soft: hsla(160, 84%, 39%, 0.15);
+  --accent-ngo-glow: hsla(160, 84%, 39%, 0.5);
+
+  --accent-volunteer: hsl(38, 92%, 50%);
+  --accent-volunteer-soft: hsla(38, 92%, 50%, 0.15);
+  --accent-volunteer-glow: hsla(38, 92%, 50%, 0.5);
+
+  --accent-sponsor: hsl(263, 70%, 58%);
+  --accent-sponsor-soft: hsla(263, 70%, 58%, 0.15);
+  --accent-sponsor-glow: hsla(263, 70%, 58%, 0.5);
+
+  /* Glass */
+  --bg-glass: rgba(14, 14, 20, 0.78);
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.04);
+  --border-medium: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+
+  /* Spotlight */
+  --spotlight-color: var(--accent-glow);
+  --spotlight-inner: var(--accent-soft);
+  --spotlight-size: 250px;
+
+  /* Transitions */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 400ms;
+}
+
+/* ── Light Theme ── */
+[data-theme="light"] {
+  --bg-primary: #fbf5ec;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f0f1f3;
+  --bg-elevated: #e8e9ec;
+  --bg-glass: rgba(255, 255, 255, 0.82);
+
+  --text-primary: #1a1a2e;
+  --text-secondary: #4a4a5a;
+  --text-muted: #8e8ea0;
+  --text-inverse: #f0ede8;
+
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-medium: rgba(0, 0, 0, 0.1);
+  --border-strong: rgba(0, 0, 0, 0.16);
+
+  --accent-ngo: hsl(158, 90%, 30%);
+  --accent-ngo-soft: hsla(158, 90%, 34%, 0.18);
+  --accent-ngo-glow: hsla(158, 90%, 34%, 0.5);
+
+  --accent-volunteer: hsl(40, 100%, 45%);
+  --accent-volunteer-soft: hsla(40, 100%, 45%, 0.20);
+  --accent-volunteer-glow: hsla(40, 100%, 45%, 0.5);
+
+  --accent-sponsor: hsl(265, 80%, 52%);
+  --accent-sponsor-soft: hsla(265, 80%, 52%, 0.18);
+  --accent-sponsor-glow: hsla(265, 80%, 52%, 0.5);
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 30px var(--accent-glow);
+
+  --spotlight-color: var(--accent-glow);
+  --spotlight-inner: var(--accent-soft);
+  --spotlight-size: 260px;
+}
+
+/* Light theme overrides for Tailwind color classes */
+[data-theme="light"] {
+  --color-bg-primary: #fbf5ec;
+  --color-bg-secondary: #ffffff;
+  --color-bg-tertiary: #f0f1f3;
+  --color-bg-elevated: #e8e9ec;
+  --color-text-primary: #1a1a2e;
+  --color-text-secondary: #4a4a5a;
+  --color-text-muted: #8e8ea0;
+  --color-text-inverse: #f0ede8;
+  --color-accent-ngo: hsl(158, 90%, 30%);
+  --color-accent-volunteer: hsl(40, 100%, 45%);
+  --color-accent-sponsor: hsl(265, 80%, 52%);
+}
+
+/* ═══════════════════════════════════════════
+   Base Layer — Global Styles
+   ═══════════════════════════════════════════ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.2;
+    text-wrap: pretty;
+  }
+
+  p {
+    text-wrap: pretty;
+    color: var(--color-text-secondary);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+  }
+
+  img {
+    max-width: 100%;
+    display: block;
+  }
+
+  input, select, textarea {
+    font-family: var(--font-body);
+    font-size: 1rem;
+  }
+
+  #root {
+    min-height: 100vh;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-strong);
+  }
+
+  /* Smooth theme transition */
+  body, body * {
+    transition: background-color 0.3s ease, color 0.25s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* ── Leaflet Overrides ── */
+  .leaflet-container {
+    background: var(--color-bg-secondary) !important;
+    border-radius: var(--radius-lg);
+  }
+  .leaflet-popup-content-wrapper {
+    background: var(--color-bg-elevated) !important;
+    color: var(--color-text-primary) !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: var(--shadow-lg) !important;
+  }
+  .leaflet-popup-tip {
+    background: var(--color-bg-elevated) !important;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   Custom Utilities
+   ═══════════════════════════════════════════ */
+@utility glass {
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+}
+
+@utility gradient-text {
+  background: linear-gradient(135deg, var(--accent) 0%, var(--color-text-primary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════════════════════════════════════════
+   Spotlight Card (pseudo-element based — cannot be Tailwind utilities)
+   ═══════════════════════════════════════════ */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+  --x: 50%;
+  --y: 50%;
+  --spotlight-opacity: 0;
+}
+
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 1;
+  background: radial-gradient(
+    var(--spotlight-size, 250px) circle at var(--x) var(--y),
+    var(--spotlight-color, hsla(160, 84%, 39%, 0.25)),
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  padding: 5px;
+  opacity: var(--spotlight-opacity, 0);
+  transition: opacity 0.35s ease;
+}
+
+.spotlight-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    calc(var(--spotlight-size, 250px) * 0.8) circle at var(--x) var(--y),
+    var(--spotlight-inner, hsla(160, 84%, 39%, 0.06)),
+    transparent 100%
+  );
+  opacity: var(--spotlight-opacity, 0);
+  transition: opacity 0.35s ease;
+}
+
+.spotlight-card > *:not(.spotlight-card__glow) {
+  position: relative;
+  z-index: 2;
+}
+
+/* ═══════════════════════════════════════════
+   Flip Card 3D (pseudo-elements, 3D transforms, complex gradients)
+   ═══════════════════════════════════════════ */
+.flip-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flip-card:hover .flip-card__inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card__front,
+.flip-card__back {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-xl);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.flip-card__front {
+  background: linear-gradient(145deg,
+    color-mix(in srgb, var(--accent) 90%, #0a0a1a) 0%,
+    color-mix(in srgb, var(--accent) 50%, #0d1117) 45%,
+    color-mix(in srgb, var(--accent) 25%, #0d1117) 100%);
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, white 10%, transparent),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.flip-card__front::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 25%, color-mix(in srgb, white 6%, transparent) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: card-shimmer 4s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.flip-card__back {
+  background: linear-gradient(160deg,
+    color-mix(in srgb, var(--color-bg-secondary) 100%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 6%, var(--color-bg-secondary)) 100%);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  transform: rotateY(180deg);
+  padding: 1.5rem;
+  justify-content: center;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, var(--accent) 10%, transparent),
+    0 0 30px color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.flip-card__pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  background-image:
+    linear-gradient(30deg, rgba(255, 255, 255, .15) 12%, transparent 12.5%, transparent 87%, rgba(255, 255, 255, .15) 87.5%),
+    linear-gradient(150deg, rgba(255, 255, 255, .15) 12%, transparent 12.5%, transparent 87%, rgba(255, 255, 255, .15) 87.5%),
+    linear-gradient(30deg, rgba(255, 255, 255, .15) 12%, transparent 12.5%, transparent 87%, rgba(255, 255, 255, .15) 87.5%),
+    linear-gradient(150deg, rgba(255, 255, 255, .15) 12%, transparent 12.5%, transparent 87%, rgba(255, 255, 255, .15) 87.5%),
+    linear-gradient(60deg, rgba(255, 255, 255, .08) 25%, transparent 25.5%, transparent 75%, rgba(255, 255, 255, .08) 75%),
+    linear-gradient(60deg, rgba(255, 255, 255, .08) 25%, transparent 25.5%, transparent 75%, rgba(255, 255, 255, .08) 75%);
+  background-size: 40px 70px;
+  background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
+  pointer-events: none;
+}

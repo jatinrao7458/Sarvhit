@@ -1,0 +1,9 @@
+{
+  "name": "sarvhit-shared",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared types, constants, and utilities for Sarvhit",
+  "main": "index.js",
+  "scripts": {}
+}

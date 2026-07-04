@@ -1,0 +1,27 @@
+{
+  "name": "sarvhit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sarvhit — Impact Platform connecting NGOs, Volunteers, and Sponsors",
+  "workspaces": [
+    "client",
+    "server",
+    "shared"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "npm run dev --workspace=client",
+    "dev:server": "npm run dev --workspace=server",
+    "build": "npm run build --workspace=client",
+    "lint": "npm run lint --workspace=client",
+    "test": "npm run test --workspaces --if-present",
+    "clean": "rimraf client/node_modules server/node_modules shared/node_modules node_modules"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
