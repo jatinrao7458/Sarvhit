@@ -2,26 +2,47 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
+import compression from "compression";
+import morgan from "morgan";
+import mongoSanitize from "express-mongo-sanitize";
+import hpp from "hpp";
+import logger from "./utils/logger.js";
+import errorMiddleware from "./middlewares/error.middleware.js";
+import { apiLimiter } from "./middlewares/rateLimiter.js";
 
 const app = express();
 
-// ---------- Security ----------
+// ---------- Security & Observability ----------
 app.use(helmet());
 app.use(cors({
   origin: process.env.CLIENT_URL || "http://localhost:5173",
   credentials: true,
 }));
 
-// ---------- Body Parsing ----------
+// Setup morgan to pipe HTTP logs to winston
+app.use(morgan("combined", { stream: logger.stream }));
+
+// Apply rate limiting to all standard API routes
+app.use("/api", apiLimiter);
+
+// ---------- Body Parsing & Compression ----------
 app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
+app.use(compression());
+
+// ---------- Data Sanitization ----------
+// Prevent NoSQL injection
+app.use(mongoSanitize());
+// Prevent HTTP Parameter Pollution
+app.use(hpp());
 
 // ---------- Health Check ----------
 app.get("/api/v1/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
+// ---------- Routes ----------
 import authRoutes from "./routes/auth.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
 import messageRoutes from "./routes/message.routes.js";
@@ -36,12 +57,6 @@ app.use((req, res) => {
 });
 
 // ---------- Global Error Handler ----------
-app.use((err, req, res, next) => {
-  console.error("❌ Error:", err.message);
-  res.status(err.statusCode || 500).json({
-    error: err.message || "Internal Server Error",
-    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
-  });
-});
+app.use(errorMiddleware);
 
 export default app;
