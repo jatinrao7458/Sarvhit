@@ -1,76 +1,99 @@
-import { createContext, useContext, useState, useCallback } from 'react';
+import { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { authAPI } from '../api/authAPI';
+import { setAccessToken } from '../api/axiosInstance';
 
 const AuthContext = createContext(null);
-
-const MOCK_USERS = {
-  ngo: {
-    id: '1',
-    name: 'Green Earth Foundation',
-    email: 'contact@greenearth.org',
-    role: 'ngo',
-    avatar: null,
-    bio: 'Working towards a sustainable future through community action and environmental education.',
-    location: 'Mumbai, India',
-    founded: '2018',
-    eventsHosted: 47,
-    volunteersConnected: 312,
-    fundsReceived: 245000,
-  },
-  volunteer: {
-    id: '2',
-    name: 'Priya Sharma',
-    email: 'priya.sharma@email.com',
-    role: 'volunteer',
-    avatar: null,
-    bio: 'Passionate about making a difference. Weekend warrior for social causes.',
-    location: 'Delhi, India',
-    hoursLogged: 186,
-    eventsJoined: 23,
-    badgesEarned: 8,
-    skills: ['Teaching', 'First Aid', 'Cooking', 'Photography'],
-  },
-  sponsor: {
-    id: '3',
-    name: 'Apex Technologies',
-    email: 'csr@apextech.com',
-    role: 'sponsor',
-    avatar: null,
-    bio: 'Committed to giving back through strategic social investments and corporate partnerships.',
-    location: 'Bangalore, India',
-    totalDonated: 750000,
-    projectsFunded: 12,
-    impactScore: 94,
-    sectors: ['Education', 'Healthcare', 'Environment'],
-  },
-};
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const login = useCallback((role) => {
-    const mockUser = MOCK_USERS[role];
-    setUser(mockUser);
-    setIsAuthenticated(true);
+  // Initialize auth state by fetching current user
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        // Attempt to fetch the current user. If a refresh token cookie exists, 
+        // the axios interceptor will handle getting a new access token automatically.
+        const response = await authAPI.getCurrentUser();
+        setUser(response.data);
+        setIsAuthenticated(true);
+      } catch (error) {
+        // Expected if not logged in
+        setUser(null);
+        setIsAuthenticated(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeAuth();
+
+    // Listen for auth-expired events from axios interceptor
+    const handleAuthExpired = () => {
+        setUser(null);
+        setIsAuthenticated(false);
+        setAccessToken(null);
+    };
+
+    window.addEventListener('auth-expired', handleAuthExpired);
+    return () => window.removeEventListener('auth-expired', handleAuthExpired);
   }, []);
 
-  const signup = useCallback((name, email, role) => {
-    const base = MOCK_USERS[role];
-    setUser({ ...base, name, email });
-    setIsAuthenticated(true);
+  const login = useCallback(async (email, password) => {
+    try {
+      const response = await authAPI.login({ email, password });
+      setUser(response.data.user);
+      setAccessToken(response.data.accessToken);
+      setIsAuthenticated(true);
+      return { success: true };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error.response?.data?.error || "Login failed" 
+      };
+    }
+  }, []);
+
+  const signup = useCallback(async (name, email, password, role) => {
+    try {
+      await authAPI.register({ name, email, password, role });
+      // Registration successful, return success so UI can redirect or show message
+      return { success: true };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error.response?.data?.error || "Signup failed" 
+      };
+    }
   }, []);
 
   const updateUser = useCallback((updates) => {
     setUser(prev => prev ? { ...prev, ...updates } : prev);
   }, []);
 
-  const logout = useCallback(() => {
-    setUser(null);
-    setIsAuthenticated(false);
+  const logout = useCallback(async () => {
+    try {
+      await authAPI.logout();
+    } catch (error) {
+      console.error("Logout error", error);
+    } finally {
+      setUser(null);
+      setIsAuthenticated(false);
+      setAccessToken(null);
+    }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, login, signup, logout, updateUser }}>
+    <AuthContext.Provider value={{ 
+        user, 
+        isAuthenticated, 
+        isLoading, 
+        login, 
+        signup, 
+        logout, 
+        updateUser 
+    }}>
       {children}
     </AuthContext.Provider>
   );

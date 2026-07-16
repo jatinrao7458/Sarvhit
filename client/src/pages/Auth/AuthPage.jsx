@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Shield, Heart, Sparkles, Eye, EyeOff, Check, Plus, X } from 'lucide-react';
+import { ArrowLeft, Shield, Heart, Sparkles, Eye, EyeOff, Check, Plus, X, AlertCircle } from 'lucide-react';
 
 const COMMON_SKILLS = [
     'First Aid', 'Teaching', 'Event Management', 'Fundraising',
@@ -31,6 +31,8 @@ export default function AuthPage() {
     const [showPassword, setShowPassword] = useState(false);
     const [selectedSkills, setSelectedSkills] = useState([]);
     const [customSkill, setCustomSkill] = useState('');
+    const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const { login, signup } = useAuth();
 
     const toggleSkill = (skill) => {
@@ -52,13 +54,54 @@ export default function AuthPage() {
     };
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!role) return;
-        if (isLogin) {
-            login(role);
-        } else {
-            signup(name || 'New User', email || 'user@sarvhit.org', role);
+        setError('');
+
+        if (!role) {
+            setError('Please select a role.');
+            return;
+        }
+
+        if (!email || !password) {
+            setError('Please enter your email and password.');
+            return;
+        }
+
+        if (!isLogin && !name) {
+            setError('Please enter your name.');
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            if (isLogin) {
+                const result = await login(email, password);
+                if (!result?.success) {
+                    setError(result?.error || 'Login failed. Please check your credentials.');
+                } else {
+                    navigate('/'); 
+                }
+            } else {
+                const result = await signup(name, email, password, role);
+                if (!result?.success) {
+                    setError(result?.error || 'Signup failed. Please try again.');
+                } else {
+                    // Registration successful, attempt login
+                    const loginResult = await login(email, password);
+                    if (loginResult?.success) {
+                        navigate('/'); 
+                    } else {
+                        setIsLogin(true);
+                        setError('Account created successfully. Please log in.');
+                    }
+                }
+            }
+        } catch (err) {
+            setError('An unexpected error occurred. Please try again later.');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -112,6 +155,32 @@ export default function AuthPage() {
                 </div>
 
                 <form className="auth-form" onSubmit={handleSubmit}>
+                    <AnimatePresence mode="wait">
+                        {error && (
+                            <motion.div 
+                                className="auth-error"
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -10 }}
+                                style={{
+                                    backgroundColor: 'rgba(255, 68, 68, 0.1)',
+                                    color: '#ff4444',
+                                    padding: '12px',
+                                    borderRadius: '8px',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    gap: '8px',
+                                    marginBottom: '16px',
+                                    fontSize: '14px',
+                                    border: '1px solid rgba(255, 68, 68, 0.2)'
+                                }}
+                            >
+                                <AlertCircle size={16} />
+                                <span>{error}</span>
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+
                     <AnimatePresence mode="wait">
                         {!isLogin && (
                             <motion.div
@@ -265,12 +334,12 @@ export default function AuthPage() {
                     <motion.button
                         type="submit"
                         className="auth-submit"
-                        disabled={!role}
+                        disabled={!role || isLoading}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.98 }}
                         style={{ '--submit-color': role ? ROLES.find(r => r.id === role)?.color : 'var(--text-muted)' }}
                     >
-                        {isLogin ? 'Log in' : 'Create account'}
+                        {isLoading ? 'Processing...' : (isLogin ? 'Log in' : 'Create account')}
                     </motion.button>
                 </form>
 

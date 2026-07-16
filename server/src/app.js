@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors({
 // ---------- Body Parsing ----------
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // ---------- Health Check ----------
 app.get("/api/v1/health", (req, res) => {
@@ -21,9 +23,8 @@ app.get("/api/v1/health", (req, res) => {
 });
 
 // ---------- API Routes ----------
-// Import and mount routes here as they are created:
-// import authRoutes from "./routes/authRoutes.js";
-// app.use("/api/v1/auth", authRoutes);
+import authRoutes from "./routes/auth.routes.js";
+app.use("/api/v1/auth", authRoutes);
 
 // ---------- 404 Handler ----------
 app.use((req, res) => {
