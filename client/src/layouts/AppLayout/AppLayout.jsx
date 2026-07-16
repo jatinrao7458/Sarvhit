@@ -1,14 +1,17 @@
 import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useNotification } from '../../context/NotificationContext';
 import { getNavItems, NAV_ITEMS } from '../../data/navigation';
 import { pageTransition } from '../../hooks/useAnimations';
 import { motion, AnimatePresence } from 'framer-motion';
 import { LogOut, Menu, X, Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import NotificationDropdown from '../../components/ui/NotificationDropdown';
 
 export default function AppLayout() {
     const { user, logout } = useAuth();
+    const { unreadMessageCount } = useNotification();
     const location = useLocation();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const navigate = useNavigate();
@@ -105,12 +108,17 @@ export default function AppLayout() {
                                     if (overrideNavPath) {
                                         active = item.path === overrideNavPath;
                                     }
+                                    
+                                    // Render badge for Messages icon
+                                    const showBadge = item.label === 'Messages' && unreadMessageCount > 0;
+                                    
                                     return (
                                         <motion.div
                                             className="nav-link__inner"
                                             initial={false}
                                             animate={active ? { x: 4 } : { x: 0 }}
                                             transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+                                            style={{ position: 'relative' }}
                                         >
                                             {active && (
                                                 <motion.div
@@ -119,11 +127,30 @@ export default function AppLayout() {
                                                     transition={{ type: 'spring', stiffness: 350, damping: 30 }}
                                                 />
                                             )}
-                                            <item.icon
-                                                size={20}
-                                                strokeWidth={active ? 2.2 : 1.6}
-                                                fill={active ? 'var(--accent-soft)' : 'none'}
-                                            />
+                                            <div style={{ position: 'relative' }}>
+                                                <item.icon
+                                                    size={20}
+                                                    strokeWidth={active ? 2.2 : 1.6}
+                                                    fill={active ? 'var(--accent-soft)' : 'none'}
+                                                />
+                                                {showBadge && (
+                                                    <span style={{
+                                                        position: 'absolute',
+                                                        top: '-4px',
+                                                        right: '-6px',
+                                                        backgroundColor: 'var(--error, #ef4444)',
+                                                        color: 'white',
+                                                        fontSize: '10px',
+                                                        fontWeight: 'bold',
+                                                        borderRadius: '10px',
+                                                        padding: '2px 6px',
+                                                        minWidth: '16px',
+                                                        textAlign: 'center'
+                                                    }}>
+                                                        {unreadMessageCount > 99 ? '99+' : unreadMessageCount}
+                                                    </span>
+                                                )}
+                                            </div>
                                             <span>{item.label}</span>
                                         </motion.div>
                                     );
@@ -158,13 +185,16 @@ export default function AppLayout() {
 
             {/* Main content */}
             <main className="app-main">
-                <header className="app-topbar">
-                    <button className="topbar__menu" onClick={() => setSidebarOpen(true)}>
-                        <Menu size={22} />
-                    </button>
-                    <div className="topbar__breadcrumb">
-                        {overrideNavPath ? (NAV_ITEMS.find(n => n.path === overrideNavPath)?.label || 'Dashboard') : (NAV_ITEMS.find(n => location.pathname.startsWith(n.path))?.label || 'Dashboard')}
+                <header className="app-topbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', paddingRight: '16px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <button className="topbar__menu" onClick={() => setSidebarOpen(true)}>
+                            <Menu size={22} />
+                        </button>
+                        <div className="topbar__breadcrumb">
+                            {overrideNavPath ? (NAV_ITEMS.find(n => n.path === overrideNavPath)?.label || 'Dashboard') : (NAV_ITEMS.find(n => location.pathname.startsWith(n.path))?.label || 'Dashboard')}
+                        </div>
                     </div>
+                    <NotificationDropdown />
                 </header>
                 <div className="app-content">
                     <AnimatePresence mode="wait">

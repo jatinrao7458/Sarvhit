@@ -83,14 +83,17 @@ function AppRoutes() {
 }
 import AIChatbot from './components/AIChatbot/AIChatbot';
 import { ThemeProvider } from './context/ThemeContext';
+import { NotificationProvider } from './context/NotificationContext';
 
 export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
         <AuthProvider>
-          <AppRoutes />
-          <AIChatbot />
+          <NotificationProvider>
+            <AppRoutes />
+            <AIChatbot />
+          </NotificationProvider>
         </AuthProvider>
       </BrowserRouter>
     </ThemeProvider>

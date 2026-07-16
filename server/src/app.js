@@ -22,9 +22,13 @@ app.get("/api/v1/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-// ---------- API Routes ----------
 import authRoutes from "./routes/auth.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
+import messageRoutes from "./routes/message.routes.js";
+
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/notifications", notificationRoutes);
+app.use("/api/v1/messages", messageRoutes);
 
 // ---------- 404 Handler ----------
 app.use((req, res) => {
