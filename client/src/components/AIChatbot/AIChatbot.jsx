@@ -4,13 +4,13 @@ import {
     X, Send, Mic, MicOff, Phone, PhoneOff,
     Bot, Sparkles, Volume2, Settings, Key, Check
 } from 'lucide-react';
-import { getGeminiResponse, setGeminiApiKey, getGeminiApiKey, isGeminiConfigured } from '../../services/geminiService';
+import { getGroqResponse, setGroqApiKey, getGroqApiKey, isGroqConfigured } from '../../services/groqService';
 import { useTheme } from '../../context/ThemeContext';
 
 /* Quick reply suggestions */
 var QUICK_REPLIES = ['How do I create an event?', 'Show my stats', 'Find volunteers', 'What is Sarvhit?'];
 
-/* ── Local fallback responses (used when Gemini API is unavailable) ── */
+/* ── Local fallback responses (used when Groq API is unavailable) ── */
 var LOCAL_RESPONSES = {
     // Platform - Core Features
     'how do i create an event': 'Great question! Here\'s how to create an event:\n1. Navigate to the **Events** page from the sidebar\n2. Click the **Create Event** button (top-right corner, NGO role only)\n3. Fill in your event details: title, date, location, and cause category\n4. Set volunteer requirements and funding goals\n5. Click **Publish** to make it live!\n\nVolunteers will be able to discover and join your event right away.',
@@ -184,7 +184,7 @@ export default function AIChatbot() {
 
     // Settings modal
     const [showSettings, setShowSettings] = useState(false);
-    const [apiKeyInput, setApiKeyInput] = useState(getGeminiApiKey());
+    const [apiKeyInput, setApiKeyInput] = useState(getGroqApiKey());
     const [keySaved, setKeySaved] = useState(false);
 
     // Load voices
@@ -224,11 +224,11 @@ export default function AIChatbot() {
         return mins + ':' + secs;
     }
 
-    /* ── Get AI response (Gemini first, then local fallback) ── */
+    /* ── Get AI response (Groq first, then local fallback) ── */
     async function getSmartResponse(userMessage, voiceMode) {
         try {
-            var geminiReply = await getGeminiResponse(userMessage, voiceMode || false);
-            if (geminiReply) return geminiReply;
+            var groqReply = await getGroqResponse(userMessage, voiceMode || false);
+            if (groqReply) return groqReply;
         } catch (e) {
             // fallback
         }
@@ -367,7 +367,7 @@ export default function AIChatbot() {
         });
     }
 
-    /* Chat send message (async with Gemini) */
+    /* Chat send message (async with Groq) */
     var sendMessage = useCallback(function (text) {
         if (!text.trim()) return;
         var userMsg = { id: Date.now(), sender: 'user', text: text.trim(), time: new Date() };
@@ -388,7 +388,7 @@ export default function AIChatbot() {
 
     /* Save API key */
     function handleSaveKey() {
-        setGeminiApiKey(apiKeyInput.trim());
+        setGroqApiKey(apiKeyInput.trim());
         setKeySaved(true);
         setTimeout(function () { setKeySaved(false); setShowSettings(false); }, 1200);
     }
@@ -453,7 +453,7 @@ export default function AIChatbot() {
                                     <span className="chatbot-panel__status">
                                         {mode === 'call'
                                             ? 'On call \u00b7 ' + formatTime(callDuration)
-                                            : isGeminiConfigured() ? 'Gemini Powered' : 'Online'}
+                                            : isGroqConfigured() ? 'Groq Powered' : 'Online'}
                                     </span>
                                 </div>
                             </div>
@@ -485,13 +485,13 @@ export default function AIChatbot() {
                                     <div className="chatbot-settings__inner">
                                         <div className="chatbot-settings__label">
                                             <Key size={13} />
-                                            <span>Gemini API Key</span>
-                                            {isGeminiConfigured() && <span className="chatbot-settings__active">Active</span>}
+                                            <span>Groq API Key</span>
+                                            {isGroqConfigured() && <span className="chatbot-settings__active">Active</span>}
                                         </div>
                                         <div className="chatbot-settings__row">
                                             <input
                                                 type="password"
-                                                placeholder="Paste your Gemini API key..."
+                                                placeholder="Paste your Groq API key..."
                                                 value={apiKeyInput}
                                                 onChange={function (e) { setApiKeyInput(e.target.value); }}
                                                 className="chatbot-settings__input"
@@ -504,8 +504,8 @@ export default function AIChatbot() {
                                                 {keySaved ? <Check size={14} /> : 'Save'}
                                             </button>
                                         </div>
-                                        <a className="chatbot-settings__link" href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">
-                                            Get free API key from Google AI Studio
+                                        <a className="chatbot-settings__link" href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">
+                                            Get free API key from Groq Console
                                         </a>
                                     </div>
                                 </motion.div>

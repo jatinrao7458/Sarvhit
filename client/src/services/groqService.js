@@ -1,12 +1,12 @@
 /*
- * Gemini AI Service
- * Uses Google Gemini API (free tier) for intelligent responses.
- * Get your free API key at: https://aistudio.google.com/apikey
+ * Groq AI Service
+ * Uses Groq API for intelligent responses.
+ * Get your free API key at: https://console.groq.com/keys
  */
 
-var GEMINI_API_KEY = 'AIzaSyDummyKeyReplaceMe';
+var GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || 'YOUR_GROQ_API_KEY_HERE';
 
-var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+var GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
 var SYSTEM_PROMPT = [
     '# IDENTITY',
@@ -150,8 +150,8 @@ var SYSTEM_PROMPT = [
     'Response: "Climate change is the long-term shift in global temperatures and weather patterns, largely driven by human activities like burning fossil fuels. On Sarvhit, you can make a direct impact through **Environment** events like tree plantations, beach cleanups, and waste management drives. Check the **Events** page and filter by Environment to find initiatives near you!"',
 ].join('\n');
 
-export async function getGeminiResponse(userMessage, isVoiceMode) {
-    if (!GEMINI_API_KEY || GEMINI_API_KEY === 'AIzaSyDummyKeyReplaceMe') {
+export async function getGroqResponse(userMessage, isVoiceMode) {
+    if (!GROQ_API_KEY || GROQ_API_KEY === 'YOUR_GROQ_API_KEY_HERE') {
         return null;
     }
 
@@ -160,59 +160,52 @@ export async function getGeminiResponse(userMessage, isVoiceMode) {
         : '';
 
     try {
-        var response = await fetch(GEMINI_URL + '?key=' + GEMINI_API_KEY, {
+        var response = await fetch(GROQ_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + GROQ_API_KEY
+            },
             body: JSON.stringify({
-                contents: [
+                model: 'llama3-8b-8192',
+                messages: [
+                    {
+                        role: 'system',
+                        content: SYSTEM_PROMPT + voiceHint
+                    },
                     {
                         role: 'user',
-                        parts: [{ text: SYSTEM_PROMPT + voiceHint + '\n\nUser message: ' + userMessage }]
+                        content: userMessage
                     }
                 ],
-                generationConfig: {
-                    temperature: 0.75,
-                    topP: 0.92,
-                    topK: 40,
-                    maxOutputTokens: isVoiceMode ? 100 : 400,
-                },
-                safetySettings: [
-                    { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
-                    { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },
-                    { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_NONE' },
-                    { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_NONE' },
-                ]
+                temperature: 0.75,
+                max_tokens: isVoiceMode ? 100 : 400
             })
         });
 
         if (!response.ok) {
-            console.warn('Gemini API error:', response.status);
+            console.warn('Groq API error:', response.status);
             return null;
         }
 
         var data = await response.json();
-        var text = data.candidates
-            && data.candidates[0]
-            && data.candidates[0].content
-            && data.candidates[0].content.parts
-            && data.candidates[0].content.parts[0]
-            && data.candidates[0].content.parts[0].text;
+        var text = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
 
         return text ? text.trim() : null;
     } catch (err) {
-        console.warn('Gemini API fetch error:', err);
+        console.warn('Groq API fetch error:', err);
         return null;
     }
 }
 
-export function setGeminiApiKey(key) {
-    GEMINI_API_KEY = key;
+export function setGroqApiKey(key) {
+    GROQ_API_KEY = key;
 }
 
-export function getGeminiApiKey() {
-    return GEMINI_API_KEY;
+export function getGroqApiKey() {
+    return GROQ_API_KEY;
 }
 
-export function isGeminiConfigured() {
-    return GEMINI_API_KEY && GEMINI_API_KEY !== 'AIzaSyDummyKeyReplaceMe';
+export function isGroqConfigured() {
+    return GROQ_API_KEY && GROQ_API_KEY !== 'YOUR_GROQ_API_KEY_HERE';
 }
